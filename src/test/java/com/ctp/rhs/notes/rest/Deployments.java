@@ -9,14 +9,13 @@ import java.io.File;
 
 public class Deployments
 {
-   public static File[] springLibraries()
+
+   public static File[] applicationLibraries()
    {
       return Maven.resolver().loadPomFromFile("pom.xml")
-                             .resolve("org.springframework:spring-context", "org.springframework:spring-webmvc",
-                                      "org.springframework:spring-tx", "org.springframework:spring-orm",
-                                      "org.codehaus.jackson:jackson-mapper-asl", "cglib:cglib")
-                             .withTransitivity()
-                             .asFile();
+            .resolve("com.google.code.gson:gson")
+            .withTransitivity()
+            .asFile();
    }
 
    public static File[] testLibraries()

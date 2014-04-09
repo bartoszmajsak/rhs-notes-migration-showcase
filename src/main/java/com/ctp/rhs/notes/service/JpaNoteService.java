@@ -1,9 +1,8 @@
 package com.ctp.rhs.notes.service;
 
 import com.ctp.rhs.notes.model.Note;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -13,7 +12,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-@Service
+@Stateless
 public class JpaNoteService implements NoteService
 {
 
@@ -31,7 +30,6 @@ public class JpaNoteService implements NoteService
    }
 
    @Override
-   @Transactional
    public Note save(Note note)
    {
       if (note.getId() == null)
@@ -46,14 +44,12 @@ public class JpaNoteService implements NoteService
    }
 
    @Override
-   @Transactional
    public void remove(Note note)
    {
       entityManager.remove(note);
    }
 
    @Override
-   @Transactional
    public void remove(Long id)
    {
       remove(entityManager.find(Note.class, id));

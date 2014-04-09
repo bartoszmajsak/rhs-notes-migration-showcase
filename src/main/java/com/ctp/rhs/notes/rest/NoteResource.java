@@ -3,55 +3,45 @@ package com.ctp.rhs.notes.rest;
 import com.ctp.rhs.notes.model.Note;
 import com.ctp.rhs.notes.service.NoteNotFoundException;
 import com.ctp.rhs.notes.service.NoteService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMethod;
-
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.Locale;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-@Controller
-@RequestMapping("/resource/note")
+@RequestScoped
+@Path("note")
 public class NoteResource
 {
 
-   @Autowired
+   @Inject
    private NoteService noteService;
 
-   @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
-   public @ResponseBody Note find(@PathVariable("id") Long id)
+   @GET
+   @Path("{id}")
+   @Produces(MediaType.APPLICATION_JSON)
+   public Note find(@PathParam("id") Long id)
    {
       return noteService.find(id);
    }
 
-   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-   @ResponseStatus(HttpStatus.NO_CONTENT)
-   public void delete(@PathVariable("id") Long id)
+
+   @DELETE
+   @Path("{id}")
+   public Response delete(@PathParam("id") Long id)
    {
       noteService.remove(id);
+      return Response.status(Response.Status.NO_CONTENT).build();
    }
 
-   @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-   @ResponseStatus(HttpStatus.CREATED)
-   public void add(@RequestBody Note note)
+   @POST
+   @Consumes(MediaType.APPLICATION_JSON)
+   public Response add(Note note)
    {
       noteService.save(note);
-   }
-
-   @ExceptionHandler(NoteNotFoundException.class)
-   @ResponseStatus(HttpStatus.NOT_FOUND)
-   @ResponseBody
-   public String handleNoteNotFoundException(HttpServletRequest req, NoteNotFoundException ex) {
-      return ex.getMessage();
+      return Response.status(Response.Status.CREATED).build();
    }
 
 }

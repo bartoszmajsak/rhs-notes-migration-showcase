@@ -1,5 +1,8 @@
 package com.ctp.rhs.notes.service;
 
+import javax.ejb.ApplicationException;
+
+@ApplicationException(rollback = false)
 public class NoteNotFoundException extends RuntimeException
 {
 

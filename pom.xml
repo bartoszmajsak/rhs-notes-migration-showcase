@@ -9,16 +9,14 @@
   <packaging>war</packaging>
 
   <properties>
-    <version.spring_framework_3>3.2.8.RELEASE</version.spring_framework_3>
-    <version.jackson.mapper>1.4.2</version.jackson.mapper>
-    <version.cglib>2.2.2</version.cglib>
     <version.lombok>1.12.6</version.lombok>
+    <version.gson>2.2.4</version.gson>
     <!-- Test dependencies -->
     <version.junit>4.11</version.junit>
     <version.assertj_core>1.5.0</version.assertj_core>
     <version.arquillian_core>1.1.4.Final</version.arquillian_core>
-    <version.arquillian_spring>1.0.0.Beta2</version.arquillian_spring>
     <version.arquillian_warp>1.0.0.Alpha2</version.arquillian_warp>
+    <version.shrinkwrap_mvn>2.0.0</version.shrinkwrap_mvn>
     <version.wildfly>8.0.0.Final</version.wildfly>
     <version.jbossas_spec>3.0.1.Final</version.jbossas_spec>
     <version.rest_assured>2.3.1</version.rest_assured>
@@ -44,49 +42,33 @@
   </dependencyManagement>
 
   <dependencies>
+
+    <dependency>
+      <groupId>org.jboss.spec</groupId>
+      <artifactId>jboss-javaee-6.0</artifactId>
+      <version>${version.jbossas_spec}</version>
+      <type>pom</type>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>xalan</groupId>
+          <artifactId>xalan</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>${version.gson}</version>
+    </dependency>
+
     <!-- Lombok -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>${version.lombok}</version>
       <scope>provided</scope>
-    </dependency>
-
-    <!-- Spring Core dependencies -->
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-context</artifactId>
-      <version>${version.spring_framework_3}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-webmvc</artifactId>
-      <version>${version.spring_framework_3}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-tx</artifactId>
-      <version>${version.spring_framework_3}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-orm</artifactId>
-      <version>${version.spring_framework_3}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.codehaus.jackson</groupId>
-      <artifactId>jackson-mapper-asl</artifactId>
-      <version>${version.jackson.mapper}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>cglib</groupId>
-      <artifactId>cglib</artifactId>
-      <version>${version.cglib}</version>
     </dependency>
 
     <!-- Test dependencies -->
@@ -133,27 +115,6 @@
 
     <dependency>
       <groupId>org.jboss.arquillian.extension</groupId>
-      <artifactId>arquillian-service-integration-spring-inject</artifactId>
-      <version>${version.arquillian_spring}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jboss.arquillian.extension</groupId>
-      <artifactId>arquillian-service-integration-spring-javaconfig</artifactId>
-      <version>${version.arquillian_spring}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jboss.arquillian.extension</groupId>
-      <artifactId>arquillian-transaction-spring</artifactId>
-      <version>${version.arquillian_spring}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jboss.arquillian.extension</groupId>
       <artifactId>arquillian-warp-api</artifactId>
       <version>${version.arquillian_warp}</version>
     </dependency>
@@ -166,11 +127,12 @@
     </dependency>
 
     <dependency>
-      <groupId>org.jboss.arquillian.extension</groupId>
-      <artifactId>arquillian-warp-spring</artifactId>
-      <version>${version.arquillian_spring}</version>
-      <scope>test</scope>
+      <groupId>org.jboss.shrinkwrap.resolver</groupId>
+      <artifactId>shrinkwrap-resolver-impl-maven</artifactId>
+      <version>${version.shrinkwrap_mvn}</version>
+      <scope>compile</scope>
     </dependency>
+
   </dependencies>
 
   <profiles>
@@ -190,19 +152,6 @@
           <groupId>org.jboss.arquillian.protocol</groupId>
           <artifactId>arquillian-protocol-servlet</artifactId>
           <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.jboss.spec</groupId>
-          <artifactId>jboss-javaee-6.0</artifactId>
-          <version>${version.jbossas_spec}</version>
-          <type>pom</type>
-          <scope>provided</scope>
-          <exclusions>
-            <exclusion>
-              <groupId>xalan</groupId>
-              <artifactId>xalan</artifactId>
-            </exclusion>
-          </exclusions>
         </dependency>
       </dependencies>
       <build>
@@ -250,8 +199,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.1</version>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <source>1.7</source>
+          <target>1.7</target>
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>

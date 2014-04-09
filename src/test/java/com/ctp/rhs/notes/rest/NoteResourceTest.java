@@ -8,7 +8,6 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.arquillian.junit.InSequence;
-import org.jboss.arquillian.spring.integration.test.annotation.SpringWebConfiguration;
 import org.jboss.arquillian.test.api.ArquillianResource;
 import org.jboss.arquillian.warp.Activity;
 import org.jboss.arquillian.warp.Inspection;
@@ -44,7 +43,7 @@ public class NoteResourceTest
                                                        .addPackages(true, Note.class.getPackage())
                                                        .addPackages(true, NoteService.class.getPackage())
                                                        .addPackages(true, NoteResource.class.getPackage())
-                                                       .addAsLibraries(springLibraries())
+                                                       .addAsLibraries(applicationLibraries())
                                                        .addAsLibraries(testLibraries())
                                                        .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml")
                                                        .merge(webAppFolder(), "/", Filters.includeAll());
@@ -107,7 +106,6 @@ public class NoteResourceTest
       .inspect(new NoteDataStoreInspection());
    }
 
-   @SpringWebConfiguration
    public static class NoteDataStoreInspection extends Inspection
    {
          private static final long serialVersionUID = -778115683463909014L;
