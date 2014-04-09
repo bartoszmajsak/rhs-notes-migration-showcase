@@ -1,0 +1,36 @@
+# Eclipse
+.project
+.classpath
+.settings/
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea
+
+# Gradle
+.gradle/
+.ivy/
+
+# Maven
+target/
+
+# TestNG
+test-output/
+
+# JBoss AS
+transaction.log
+
+# Infinitest configuration
+infinitest.filters
+
+# Logs
+*.log
+*.log~
+log.txt
+
+# Libreoffice leftovers (XLS)
+.~lock*
+
+atlassian-ide-plugin.xml
