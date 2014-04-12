@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:windup="http://www.jboss.org/schema/windup"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.jboss.org/schema/windup http://www.jboss.org/schema/windup.xsd">
+
+	<windup:pipeline type="JAVA" id="spring-to-javaee-decorators">
+		<windup:java-classification regex="org.springframework" description="Spring Component">
+			<windup:decorators>
+				<windup:link url="http://howtojboss.com/tag/spring/" description="Read this multi-part series by Bert Ertman  and Paul Bakker of Luminis to learn about Spring to Java EEmigration strategies." />
+				<windup:link url="http://confluence.ctp-consulting.com/" description="Cambridge Technology Partners confluence" />
+				<windup:link url="https://jersey.java.net/documentation/latest/representations.html" description="More details about data representations and responses. Project Jersey." />
+				<windup:link url="https://svn.apache.org/repos/asf/ambari/tags/release-1.2.3-rc0/ambari-server/src/main/java/org/apache/ambari/server/api/GsonJsonProvider.java" description="Example of MessageBodyReader/Writer using GSON" />
+				<windup:link url="https://howtodoinjava.com/2013/06/03/exception-handling-in-jax-rs-resteasy-with-exceptionmapper/" description="Custom exception handling in JAX-RS" />
+			</windup:decorators>
+		</windup:java-classification>
+		
+		<windup:java-classification source-type="IMPORT" regex="org.springframework.beans.factory.annotation.Autowired$" 
+											description="Spring injection"
+											effort="1"/>
+		<windup:java-classification source-type="IMPORT" regex="org.springframework.stereotype" 
+											description="Spring component stereotypes (candidates for CDI)"
+											effort="1"/>
+		<windup:java-classification source-type="IMPORT" regex="org.springframework.web.bind.annotation" 
+											description="Spring web"
+											effort="1"/>
+	</windup:pipeline>
+	
+	<windup:java-hints id="spring-to-javaee">
+
+		<windup:java-hint regex="org.springframework.stereotype.Controller" hint="Spring Controller. Consider replacing with corresponding CDI bean (eg. @RequestScoped)" />
+		<windup:java-hint regex="org.springframework.stereotype.Service" hint="Spring Service. Consider replacing with corresponding CDI bean (eg. @RequestScoped)" />
+		<windup:java-hint regex="org.springframework.transaction.annotation.Transactional" hint="This component requires transactions. Consider using EJB model, for instance @javax.ejb.Stateless." />
+		<windup:java-hint regex="org.springframework.beans.factory.annotation.Autowired" 
+   				  hint="Rework injection. Simply replace proprietary @Autowired with @javax.inject.Inject which is also supported by Spring."  />
+		<windup:java-hint regex="org.springframework.web.bind.annotation.RequestMapping" hint="Use @javax.ws.rs.Path instead. If method parameter is specified,  change to appropriate @javax.ws.rs.GET, @javax.ws.rs.PUT, @javax.ws.rs.POST, @javax.ws.rs.DELETE or @javax.ws.rs.HEAD (based on defined method parameter). Use @javax.ws.rs.Produce and appropriate MediaType (eg. APPLICATIO_JSON)." />
+		<windup:java-hint regex="org.springframework.web.bind.annotation.PathVariable" hint="Change to JAX-RS counterpart javax.ws.rs.PathParam" />
+		<windup:java-hint regex="org.springframework.web.bind.annotation.ResponseStatus" hint="Use JAX-RS ResponseBuilder, eg. Response.status(Response.Status.NO_CONTENT).build()" effort="1" />
+		<windup:java-hint regex="org.springframework.web.bind.annotation.ExceptionHandler" hint="Implemenent custom exception mapper (javax.ws.rs.ext.ExceptionMapper). See confluence for more details" effort="2" />
+		<windup:java-hint regex="org.springframework.web.bind.annotation.ResponseBody" hint="Implicitly de/serialized by Jackson in Spring. In JAX-RS you will need to implement MessageReader and Writer (for instance using GSON library)" effort="2" />
+		<windup:java-hint regex="org.springframework.web.bind.annotation.RequestBody" hint="Implicitly de/serialized by Jackson in Spring. In JAX-RS you will need to implement MessageReader and Writer (for instance using GSON library)" effort="2" />
+		
+	</windup:java-hints>				
+	
+</beans>	
+			
+
